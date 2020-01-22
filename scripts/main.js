@@ -16,7 +16,7 @@
   formHandler.addSubmitHandler(myTruck.createOrder.bind(myTruck));
   console.log(formHandler);
 
-  sliderHandler.addChangeHandler(function (value) {
+  var resetSlider = function (value) {
     console.log('Caffeine rating changed from ' + this.innerText + ' to ' + value);
     this.innerText = value;
     this.classList.remove("text-success");
@@ -40,6 +40,10 @@
         this.classList.add("text-danger");
         break;
     };
-  }.bind(document.querySelector(SLIDER_DISPLAY_VALUE_SELECTOR)));
+  }.bind(document.querySelector(SLIDER_DISPLAY_VALUE_SELECTOR));
+
+  sliderHandler.addChangeHandler(resetSlider);
   console.log(sliderHandler);
+
+  window.resetSlider = resetSlider;
 })(window);
