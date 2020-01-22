@@ -19,6 +19,27 @@
   sliderHandler.addChangeHandler(function (value) {
     console.log('Caffeine rating changed from ' + this.innerText + ' to ' + value);
     this.innerText = value;
+    this.classList.remove("text-success");
+    this.classList.remove("text-warning");
+    this.classList.remove("text-danger");
+    var colorRating = Math.floor((value - 1) / 33);
+    switch(colorRating) {
+      case -1:
+        this.classList.add("text-success");
+        break;
+      case 0:
+        this.classList.add("text-success");
+        break;
+      case 1:
+        this.classList.add("text-warning");
+        break;
+      case 2:
+        this.classList.add("text-danger");
+        break;
+      case 3:
+        this.classList.add("text-danger");
+        break;
+    };
   }.bind(document.querySelector(SLIDER_DISPLAY_VALUE_SELECTOR)));
   console.log(sliderHandler);
 })(window);

@@ -18,10 +18,10 @@
         console.log('Setting change handler for slider');
         this.$sliderElement.on('change', function (event) {
             event.preventDefault();
-            fn(this.$sliderElement[0].value);
+            fn(this.$sliderElement[0].valueAsNumber);
         }.bind(this));
         console.log('Presetting values');
-        fn(this.$sliderElement[0].value);
+        fn(this.$sliderElement[0].valueAsNumber);
     };
 
     App.SliderHandler = SliderHandler;
