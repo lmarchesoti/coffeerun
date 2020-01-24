@@ -8,15 +8,11 @@
   }
 
   function isPowerOrder(order) {
-    return true;
-  };
+    return order.size === "grande" && order.strength === "100" && order.flavor !== "";
+  }
 
   PowerUserList.prototype.isPowerUser = function (email) {
     return this.powerUsers.has(email);
-  };
-
-  PowerUserList.prototype.addPowerUser = function (email) {
-    this.powerUsers.add(email);
   };
 
   PowerUserList.prototype.tryAddingPowerUser = function (order) {
