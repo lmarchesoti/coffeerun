@@ -5,23 +5,11 @@
   function Truck(truckId, db) {
     this.truckId = truckId;
     this.db = db;
-    this.powerUsers = new Set();
-  }
-
-  function isPowerOrder(order) {
-    return true;
   }
 
   Truck.prototype.createOrder = function (order) {
     console.log('Adding order for ' + order.emailAddress);
     this.db.add(order.emailAddress, order);
-    if (isPowerOrder(order)) {
-      this.powerUsers.add(order.emailAddress);
-    }
-  };
-
-  Truck.prototype.isPowerUser = function (email) {
-    return this.powerUsers.has(email);
   };
 
   Truck.prototype.deliverOrder = function (customerId) {

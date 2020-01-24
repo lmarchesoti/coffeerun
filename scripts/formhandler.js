@@ -14,7 +14,7 @@
         }
     }
 
-    FormHandler.prototype.addSubmitHandler = function (fn) {
+    FormHandler.prototype.addSubmitHandler = function (fn_list) {
         console.log('Setting submit handler for form');
         this.$formElement.on('submit', function (event) {
             event.preventDefault();
@@ -33,7 +33,9 @@
                 console.log(item.name + ' is ' + item.value);
             });
             console.log(data);
-            fn(data);
+            fn_list.forEach(function (fn) {
+                fn(data);
+            });
             this.reset();
             this.elements[0].focus();
         });
