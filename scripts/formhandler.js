@@ -21,7 +21,15 @@
 
             var data = {};
             $(this).serializeArray().forEach(function (item) {
-                data[item.name] = item.value;
+                if (item.name in data) {
+                    if (Array.isArray(data[item.name])) {
+                        data[item.name].append(item.value);
+                    } else {
+                        data[item.name] = [data[item.name], item.value];
+                    }
+                } else {
+                    data[item.name] = item.value;
+                }
                 console.log(item.name + ' is ' + item.value);
             });
             console.log(data);
