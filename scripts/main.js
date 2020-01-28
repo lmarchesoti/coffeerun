@@ -14,14 +14,15 @@
     var ConfirmationHandler = App.ConfirmationHandler;
     var myTruck = new Truck('ncc-1701', new DataStore());
     window.myTruck = myTruck;
-    var confirmationHandler = new ConfirmationHandler(MODAL_SELECTOR);
-    var powerUserlist = new PowerUserList(confirmationHandler);
+    var powerUserlist = new PowerUserList();
+    var confirmationHandler = new ConfirmationHandler(MODAL_SELECTOR,
+        powerUserlist.isPowerOrder, powerUserlist.addPowerUser.bind(powerUserlist));
     var formHandler = new FormHandler(FORM_SELECTOR);
     var emailHandler = new EmailHandler(EMAIL_INPUT_SELECTOR);
     var powerUpHandler = new PowerUpHandler(POWERUP_CONTAINER_SELECTOR);
 
     formHandler.addSubmitHandler([myTruck.createOrder.bind(myTruck),
-        powerUserlist.tryAddingPowerUser.bind(powerUserlist)]);
+        confirmationHandler.confirm.bind(confirmationHandler)]);
     console.log(formHandler);
 
     emailHandler.addChangeHandler(powerUserlist.isPowerUser.bind(powerUserlist),
