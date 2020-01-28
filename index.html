@@ -12,7 +12,7 @@
     <section>
       <div class="panel panel-default">
         <div class="panel-body">
-          <form data-coffee-order="form" onReset="resetSlider(30)">
+          <form data-coffee-order="form">
             <div class="form-group">
               <label for="coffeeOrder">Coffee Order</label>
               <input class="form-control" name="coffee" id="coffeeOrder" autofocus>
@@ -52,7 +52,7 @@
             <div class="form-group">
               <label for="strengthLevel">Caffeine Rating</label>
               <strong strength-level="display-value"></strong>
-              <input name="strength" id="strengthLevel" type="range" value="30"
+              <input name="strength" id="strengthLevel" type="range" strength-level-default="30"
               strength-level="slider">
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
@@ -62,6 +62,7 @@
       </div>
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+    <script src="scripts/sliderdisplayvaluehandler.js" charset="utf-8"></script>
     <script src="scripts/sliderhandler.js" charset="utf-8"></script>
     <script src="scripts/formhandler.js" charset="utf-8"></script>
     <script src="scripts/datastore.js" charset="utf-8"></script>

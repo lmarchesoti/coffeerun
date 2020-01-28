@@ -31,6 +31,17 @@
         });
     };
 
+    FormHandler.prototype.addResetHandler = function (fn) {
+        console.log('Setting reset handler for form');
+        this.$formElement.on('reset', function (event) {
+            event.preventDefault();
+
+            this.reset();
+            this.elements[0].focus();
+            fn();
+        });
+    };
+
     App.FormHandler = FormHandler;
     window.App = App;
 })(window);

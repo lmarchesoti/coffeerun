@@ -20,8 +20,16 @@
             event.preventDefault();
             fn(this.$sliderElement[0].valueAsNumber);
         }.bind(this));
-        console.log('Presetting values');
-        fn(this.$sliderElement[0].valueAsNumber);
+        this.$change_fn = fn;
+    };
+
+    SliderHandler.prototype.getDefault = function () {
+        return $(this.$sliderElement).attr('strength-level-default');
+    };
+
+    SliderHandler.prototype.reset = function () {
+        this.$change_fn(this.getDefault());
+        this.$sliderElement[0].value = this.getDefault();
     };
 
     App.SliderHandler = SliderHandler;
