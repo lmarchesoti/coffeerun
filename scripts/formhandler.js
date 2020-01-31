@@ -31,6 +31,19 @@
         });
     };
 
+    FormHandler.prototype.fillData = function (data) {
+        for (var key in data) {
+            var element = this.$formElement.find('[name="' + key + '"]');
+            if (element[0].type === 'radio') {
+                $.each(element, function (index, el) {
+                    el.checked = el.value === data[key];
+                });
+            } else {
+                element.val(data[key]);
+            }
+        }
+    };
+
     App.FormHandler = FormHandler;
     window.App = App;
 })(window);
