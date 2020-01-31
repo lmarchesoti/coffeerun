@@ -15,12 +15,27 @@
         }
     }
 
-    Checklist.prototype.addClickHandler = function (fn) {
+    Checklist.prototype.addClickHandler = function (fn_click, fn_dblclick) {
+        this.clicked = false;
+        this.fnTimeout = null;
+        this.removeTimeout = null;
         this.$element.on('click', 'input', function (event) {
             var email = event.target.value;
-            this.grayOut(email);
-            this.queuedRemoveRow(email);
-            fn(email);
+            if (this.clicked) {
+                this.clicked = false;
+                clearTimeout(this.removeTimeout);
+                clearTimeout(this.fnTimeout);
+                this.clearGrayOut(email);
+                fn_dblclick(email);
+            } else {
+                this.clicked = true;
+                this.grayOut(email);
+                this.removeTimeout = setTimeout(this.removeRow.bind(this), 800, email);
+                this.fnTimeout = setTimeout(fn_click, 800, email);
+                setTimeout(function () {
+                    this.clicked = false;
+                }.bind(this), 800);
+            }
         }.bind(this));
     };
 
@@ -41,12 +56,12 @@
             .closest('[data-coffee-order="checkbox"');
     };
 
-    Checklist.prototype.queuedRemoveRow = function (email) {
-        setTimeout(this.removeRow.bind(this), 800, email);
-    };
-
     Checklist.prototype.grayOut = function (email) {
         this.findByEmail(email).addClass('text-muted');
+    };
+
+    Checklist.prototype.clearGrayOut = function (email) {
+        this.findByEmail(email).removeClass('text-muted');
     };
 
     function Row(coffeeOrder) {

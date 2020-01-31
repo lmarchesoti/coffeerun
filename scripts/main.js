@@ -10,7 +10,9 @@
   var myTruck = new Truck('ncc-1701', new DataStore());
   window.myTruck = myTruck;
   var checkList = new CheckList(CHECKLIST_SELECTOR);
-  checkList.addClickHandler(myTruck.deliverOrder.bind(myTruck));
+  checkList.addClickHandler(myTruck.deliverOrder.bind(myTruck), function () {
+
+  });
   var formHandler = new FormHandler(FORM_SELECTOR);
 
   formHandler.addSubmitHandler(function (data) {
