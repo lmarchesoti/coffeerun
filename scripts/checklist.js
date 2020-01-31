@@ -18,7 +18,8 @@
     Checklist.prototype.addClickHandler = function (fn) {
         this.$element.on('click', 'input', function (event) {
             var email = event.target.value;
-            this.removeRow(email);
+            this.grayOut(email);
+            this.queuedRemoveRow(email);
             fn(email);
         }.bind(this));
     };
@@ -30,10 +31,22 @@
     };
 
     Checklist.prototype.removeRow = function (email) {
-        this.$element
-            .find('[value="' + email + '"]')
-            .closest('[data-coffee-order="checkbox"')
+        this.findByEmail(email)
             .remove();
+    };
+
+    Checklist.prototype.findByEmail = function (email) {
+        return this.$element
+            .find('[value="' + email + '"]')
+            .closest('[data-coffee-order="checkbox"');
+    };
+
+    Checklist.prototype.queuedRemoveRow = function (email) {
+        setTimeout(this.removeRow.bind(this), 800, email);
+    };
+
+    Checklist.prototype.grayOut = function (email) {
+        this.findByEmail(email).addClass('text-muted');
     };
 
     function Row(coffeeOrder) {
