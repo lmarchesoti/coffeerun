@@ -49,16 +49,30 @@
             value: coffeeOrder.emailAddress
         });
 
+        var $description = $('<p></p>', {class: 'img-rounded order-description'});
+
         var description = coffeeOrder.size + ' ';
         if (coffeeOrder.flavor) {
             description += coffeeOrder.flavor + ' ';
+
+                if (coffeeOrder.flavor === "caramel") {
+                    $description.addClass("flavor-caramel");
+                }
+                if (coffeeOrder.flavor === "almond") {
+                    $description.addClass("flavor-almond");
+                }
+                if (coffeeOrder.flavor === "mocha") {
+                    $description.addClass("flavor-mocha");
+                }
         }
         description += coffeeOrder.coffee + ', ';
         description += ' (' + coffeeOrder.emailAddress + ')';
         description += ' [' + coffeeOrder.strength + 'x]';
 
+        $description.append(description);
+
         $label.append($checkbox);
-        $label.append(description);
+        $label.append($description);
         $div.append($label);
 
         this.$element = $div;

@@ -1,0 +1,18 @@
+.order-description {
+    padding: 0 5px;
+}
+
+.flavor-caramel {
+    background-color: #803300;
+    color: #FF944D;
+}
+
+.flavor-almond {
+    background-color: #80560E;
+    color: #FFC869;
+}
+
+.flavor-mocha {
+    background-color: #801500;
+    color: #FF6A4D;
+}
