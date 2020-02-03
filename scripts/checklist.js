@@ -67,11 +67,11 @@
     };
 
     Checklist.prototype.grayOut = function (email) {
-        this.findByEmail(email).addClass('text-muted');
+        this.findByEmail(email).addClass('gray-out');
     };
 
     Checklist.prototype.clearGrayOut = function (email) {
-        this.findByEmail(email).removeClass('text-muted');
+        this.findByEmail(email).removeClass('gray-out');
     };
 
     function createDescription(coffeeOrder) {

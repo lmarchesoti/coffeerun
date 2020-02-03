@@ -1,0 +1,4 @@
+.gray-out {
+    color: white;
+    transition: color 1000ms ease-out;
+}
