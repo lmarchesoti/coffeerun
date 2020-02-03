@@ -40,9 +40,19 @@
     };
 
     Checklist.prototype.addRow = function (coffeeOrder) {
-        this.removeRow(coffeeOrder.emailAddress);
-        var rowElement = new Row(coffeeOrder);
-        this.$element.append(rowElement.$element);
+        var row = this.findByEmail(coffeeOrder.emailAddress);
+        if (row.length === 0) {
+            var rowElement = new Row(coffeeOrder);
+            this.$element.append(rowElement.$element);
+        } else {
+            this.editRow(row, coffeeOrder);
+        }
+    };
+
+    Checklist.prototype.editRow = function(row, coffeeOrder) {
+        row.find('label').contents().filter(function() {
+            return this.nodeType === 3;
+        }).last().replaceWith(createDescription(coffeeOrder));
     };
 
     Checklist.prototype.removeRow = function (email) {
@@ -64,6 +74,17 @@
         this.findByEmail(email).removeClass('text-muted');
     };
 
+    function createDescription(coffeeOrder) {
+        var description = coffeeOrder.size + ' ';
+        if (coffeeOrder.flavor) {
+            description += coffeeOrder.flavor + ' ';
+        }
+        description += coffeeOrder.coffee + ', ';
+        description += ' (' + coffeeOrder.emailAddress + ')';
+        description += ' [' + coffeeOrder.strength + 'x]';
+        return description;
+    }
+
     function Row(coffeeOrder) {
         var $div = $('<div></div>', {
             'data-coffee-order': 'checkbox',
@@ -76,14 +97,7 @@
             type: 'checkbox',
             value: coffeeOrder.emailAddress
         });
-
-        var description = coffeeOrder.size + ' ';
-        if (coffeeOrder.flavor) {
-            description += coffeeOrder.flavor + ' ';
-        }
-        description += coffeeOrder.coffee + ', ';
-        description += ' (' + coffeeOrder.emailAddress + ')';
-        description += ' [' + coffeeOrder.strength + 'x]';
+        var description = createDescription(coffeeOrder);
 
         $label.append($checkbox);
         $label.append(description);
