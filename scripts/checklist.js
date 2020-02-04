@@ -13,30 +13,39 @@
         if (this.$element.length === 0) {
             throw new Error('Could not find element with selector: ' + selector);
         }
+
+        this.fnClickTimeout = {};
+        this.removeTimeout = {};
     }
 
     Checklist.prototype.addClickHandler = function (fn_click, fn_dblclick) {
-        this.clicked = false;
-        this.fnTimeout = null;
-        this.removeTimeout = null;
         this.$element.on('click', 'input', function (event) {
             var email = event.target.value;
-            if (this.clicked) {
-                this.clicked = false;
-                clearTimeout(this.removeTimeout);
-                clearTimeout(this.fnTimeout);
-                this.clearGrayOut(email);
+            if (this.rowClicked(email)) {
+                this.rowDblClickEvent(email);
                 fn_dblclick(email);
             } else {
-                this.clicked = true;
+                this.rowClickEvent(email, fn_click);
                 this.grayOut(email);
-                this.removeTimeout = setTimeout(this.removeRow.bind(this), 800, email);
-                this.fnTimeout = setTimeout(fn_click, 800, email);
-                setTimeout(function () {
-                    this.clicked = false;
-                }.bind(this), 800);
             }
         }.bind(this));
+    };
+
+    Checklist.prototype.rowClicked = function (email) {
+        return this.findByEmail(email).hasClass('gray-out');
+    };
+
+    Checklist.prototype.rowClickEvent = function (email, fn_click) {
+        this.removeTimeout[email] = setTimeout(this.removeRow.bind(this), 800, email);
+        this.fnClickTimeout[email] = setTimeout(fn_click, 800, email);
+    };
+
+    Checklist.prototype.rowDblClickEvent = function (email) {
+        this.clearGrayOut(email);
+        clearTimeout(this.removeTimeout[email]);
+        delete this.removeTimeout[email];
+        clearTimeout(this.fnClickTimeout[email]);
+        delete this.fnClickTimeout[email];
     };
 
     Checklist.prototype.addRow = function (coffeeOrder) {
@@ -49,8 +58,8 @@
         }
     };
 
-    Checklist.prototype.editRow = function(row, coffeeOrder) {
-        row.find('label').contents().filter(function() {
+    Checklist.prototype.editRow = function (row, coffeeOrder) {
+        row.find('label').contents().filter(function () {
             return this.nodeType === 3;
         }).last().replaceWith(createDescription(coffeeOrder));
     };
@@ -74,18 +83,8 @@
         this.findByEmail(email).removeClass('gray-out');
     };
 
-    function createDescription(coffeeOrder) {
-        var description = coffeeOrder.size + ' ';
-        if (coffeeOrder.flavor) {
-            description += coffeeOrder.flavor + ' ';
-        }
-        description += coffeeOrder.coffee + ', ';
-        description += ' (' + coffeeOrder.emailAddress + ')';
-        description += ' [' + coffeeOrder.strength + 'x]';
-        return description;
-    }
-
     function Row(coffeeOrder) {
+
         var $div = $('<div></div>', {
             'data-coffee-order': 'checkbox',
             'class': 'checkbox'
@@ -104,6 +103,17 @@
         $div.append($label);
 
         this.$element = $div;
+    }
+
+    function createDescription(coffeeOrder) {
+        var description = coffeeOrder.size + ' ';
+        if (coffeeOrder.flavor) {
+            description += coffeeOrder.flavor + ' ';
+        }
+        description += coffeeOrder.coffee + ', ';
+        description += ' (' + coffeeOrder.emailAddress + ')';
+        description += ' [' + coffeeOrder.strength + 'x]';
+        return description;
     }
 
     App.Checklist = Checklist;
