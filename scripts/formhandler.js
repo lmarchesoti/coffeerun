@@ -45,6 +45,31 @@
         });
     };
 
+    FormHandler.prototype.addOrderHandler = function (fn) {
+        console.log('Setting order handler for form');
+        this.$formElement.on('input', '[name="strength"]', function (event) {
+            var $coffeeInput = this.$formElement.find('[name="coffee"]')[0];
+            var $strengthInput = event.target;
+            handleOrder($coffeeInput, $strengthInput, fn);
+        }.bind(this));
+
+        this.$formElement.on('input', '[name="coffee"]', function (event) {
+            var $coffeeInput = event.target;
+            var $strengthInput = this.$formElement.find('[name="strength"]')[0];
+            handleOrder($coffeeInput, $strengthInput, fn);
+        }.bind(this));
+    };
+
+    function handleOrder($coffeeInput, $strengthInput, fn) {
+        var message = '';
+        if (fn($coffeeInput.value, $strengthInput.value)) {
+            $($strengthInput).setCustomValidity('');
+        } else {
+            message = $strengthInput.value + ' is too strong for decaf!';
+            $($strengthInput).setCustomValidity(message);
+        }
+    }
+
     App.FormHandler = FormHandler;
     window.App = App;
 })(window);

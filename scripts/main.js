@@ -21,6 +21,7 @@
   });
 
   formHandler.addInputHandler(Validation.isCompanyEmail);
+  formHandler.addOrderHandler(Validation.isDecaf);
 
   webshim.polyfill('forms forms-ext');
   webshim.setOptions('forms', { addValidators: true, lazyCustomMessages: true});
