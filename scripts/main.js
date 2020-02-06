@@ -22,6 +22,6 @@
     checkList.addRow.call(checkList, data);
   });
 
-  formHandler.addInputHandler(Validation.isCompanyEmail);
+  formHandler.addInputHandler(Validation.isCompanyEmail, remoteDS.get.bind(remoteDS));
 
 })(window);

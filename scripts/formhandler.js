@@ -31,13 +31,19 @@
         });
     };
 
-    FormHandler.prototype.addInputHandler = function (fn) {
+    FormHandler.prototype.addInputHandler = function (fn, fn_remote) {
         console.log('Setting input handler for form');
         this.$formElement.on('input', '[name="emailAddress"]', function (event) {
             var emailAddress = event.target.value;
             var message = '';
             if (fn(emailAddress)) {
                 event.target.setCustomValidity('');
+                fn_remote(emailAddress, function (serverResponse) {
+                    if (serverResponse != null) {
+                        message = emailAddress + ' already has a pending order!';
+                        event.target.setCustomValidity(message);
+                    }
+                }.bind(this));
             } else {
                 message = emailAddress + ' is not an authorized email address!';
                 event.target.setCustomValidity(message);
