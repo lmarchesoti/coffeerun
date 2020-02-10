@@ -1,27 +1,36 @@
 (function (window) {
-  'use strict';
-  var App = window.App || {};
+    'use strict';
+    var App = window.App || {};
+    var Promise = window.Promise;
 
-  function DataStore() {
-    this.data = {};
-  }
+    function DataStore() {
+        this.data = {};
+    }
 
-  DataStore.prototype.add = function (key, val) {
-    this.data[key] = val;
-  };
+    function promiseResolvedWith(value) {
+      return new Promise(function (resolve, reject) {
+          resolve(value);
+        });
+    }
 
-  DataStore.prototype.get = function (key) {
-    return this.data[key];
-  };
+    DataStore.prototype.add = function (key, val) {
+        this.data[key] = val;
+        return promiseResolvedWith(null);
+    };
 
-  DataStore.prototype.getAll = function () {
-    return this.data;
-  };
+    DataStore.prototype.get = function (key) {
+        return promiseResolvedWith(this.data[key]);
+    };
 
-  DataStore.prototype.remove = function (key) {
-    delete this.data[key];
-  };
+    DataStore.prototype.getAll = function () {
+        return promiseResolvedWith(this.data);
+    };
 
-  App.DataStore = DataStore;
-  window.App = App;
+    DataStore.prototype.remove = function (key) {
+        delete this.data[key];
+        return promiseResolvedWith(null);
+    };
+
+    App.DataStore = DataStore;
+    window.App = App;
 })(window);
